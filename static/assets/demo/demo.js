@@ -15,12 +15,20 @@ var tryToSetupFunc = function() {
         reconnectFrequencySeconds = 64;
     }
 };
+function wait(ms){
+  var start = new Date().getTime();
+  var end = start;
+  while(end < start + ms) {
+    end = new Date().getTime();
+ }
+}
 
 var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
 
 function setupEventSource() {
     evtSource = new EventSource("/chart-data"); 
     evtSource.onmessage = function(e) {
+      wait(15000);
       console.log(e);
     };
     evtSource.onopen = function(e) {
