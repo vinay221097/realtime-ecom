@@ -31,7 +31,7 @@ function setupEventSource() {
     evtSource.onerror = function(e) {
       evtSource.close();
       console.log("closed");
-      setTimeout(reconnectFunc(),15000);
+      setTimeout(reconnectFunc,15000);
     };
 }
 
@@ -562,7 +562,7 @@ evtSource.onmessage = function (event) {
   
 
     const cdata = JSON.parse(event.data);
-    console.log(chart_labels,chart_name,chart_labels[chart_name]);
+    // console.log(chart_labels,chart_name,chart_labels[chart_name]);
     if (chart_labels[chart_name].length === 30) {
       chart_labels[chart_name].shift();
       chart_data[chart_name].shift();
@@ -571,7 +571,7 @@ evtSource.onmessage = function (event) {
     chart_data[chart_name].push(cdata[chart_name].value);
     config.data.labels=chart_labels[chart_name];
     config.data.datasets[0].data=chart_data[chart_name];        
-    console.log(cdata);
+    // console.log(cdata);
     myChartData.update();
 
     var chart_maps={"sessions":{"config":sesdata,"chartobj":mysessChart},"devices":{"config":devdata,"chartobj":mydeviceChart},"pages":{"config":pagdata,"chartobj":mypagesChart}}
@@ -585,7 +585,7 @@ evtSource.onmessage = function (event) {
       chart_data[key].push(cdata[key].value);
       chart_maps[key]['config'].data.labels=chart_labels[key];
       chart_maps[key]['config'].data.datasets[0].data=chart_data[key];        
-      console.log(cdata);
+      // console.log(cdata);
       chart_maps[key]['chartobj'].update();
 
     }
