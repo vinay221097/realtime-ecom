@@ -19,6 +19,7 @@ function wait(ms){
   var start = new Date().getTime();
   var end = start;
   while(end < start + ms) {
+    console.log(end);
     end = new Date().getTime();
  }
 }
@@ -29,7 +30,8 @@ function setupEventSource() {
     evtSource = new EventSource("/chart-data"); 
     evtSource.onmessage = function(e) {
       wait(15000);
-      console.log(e);
+      console.log("hi");
+
     };
     evtSource.onopen = function(e) {
       console.log("opened");
