@@ -15,7 +15,7 @@ def index(request):
 
 
 
-async def generate_random_data(request):
+def generate_random_data(request):
     """
     Generates random value between 0 and 100
 
