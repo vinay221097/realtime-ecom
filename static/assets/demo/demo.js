@@ -1,5 +1,8 @@
 type = ['primary', 'info', 'success', 'warning', 'danger'];
+var chart_labels = {"sessions":[0],"clicks":[0],"engagement_time":[0],"pages":[0],"devices":[0]}
+var chart_data = {"sessions":[0],"clicks":[0],"engagement_time":[0],"devices":[0],"pages":[0]};
 
+var chart_name="sessions";
 demo = {
   initPickColor: function() {
     $('.pick-class-label').click(function() {
@@ -357,8 +360,10 @@ demo = {
     gradientStroke.addColorStop(0.2, 'rgba(72,72,176,0.0)');
     gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
 
-    var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+    var sesdata = {
+      type: "line",
+      data:{
+      labels: chart_labels['sessions'],
       datasets: [{
         label: "Data",
         fill: true,
@@ -374,15 +379,14 @@ demo = {
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [80, 100, 70, 80, 120, 80],
+        data: chart_data['sessions'],
       }]
-    };
+    },
+    options: gradientChartOptionsConfigurationWithTooltipPurple
+  }
+    ;
 
-    var myChart = new Chart(ctx, {
-      type: 'line',
-      data: data,
-      options: gradientChartOptionsConfigurationWithTooltipPurple
-    });
+    var mysessChart = new Chart(ctx, sesdata);
 
 
     var ctxGreen = document.getElementById("chartLineGreen").getContext("2d");
@@ -393,10 +397,12 @@ demo = {
     gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
     gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
 
-    var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
+    var devdata = {
+      type:"line",
+      data:{
+      labels: chart_labels['devices'],
       datasets: [{
-        label: "My First dataset",
+        label: "value",
         fill: true,
         backgroundColor: gradientStroke,
         borderColor: '#00d6b4',
@@ -410,21 +416,19 @@ demo = {
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
         pointRadius: 4,
-        data: [90, 27, 60, 12, 80],
+        data: chart_data['devices'],
       }]
-    };
+    },
+    options: gradientChartOptionsConfigurationWithTooltipGreen
+  };
 
-    var myChart = new Chart(ctxGreen, {
-      type: 'line',
-      data: data,
-      options: gradientChartOptionsConfigurationWithTooltipGreen
-
-    });
+    var mydeviceChart = new Chart(ctxGreen, devdata);
 
 
 
-    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+
+
+
 
 
     var ctx = document.getElementById("chartBig1").getContext('2d');
@@ -437,9 +441,9 @@ demo = {
     var config = {
       type: 'line',
       data: {
-        labels: chart_labels,
+        labels: chart_labels[chart_name],
         datasets: [{
-          label: "My First dataset",
+          label: "value",
           fill: true,
           backgroundColor: gradientStroke,
           borderColor: '#d346b1',
@@ -453,31 +457,32 @@ demo = {
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
           pointRadius: 4,
-          data: chart_data,
+          data: chart_data[chart_name],
         }]
       },
       options: gradientChartOptionsConfigurationWithTooltipPurple
     };
     var myChartData = new Chart(ctx, config);
     $("#0").click(function() {
-      var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      chart_name="sessions"
+      config.data.labels=chart_labels[chart_name]
+      config.data.datasets[0].data=chart_data[chart_name]
       myChartData.update();
     });
+
+
+
     $("#1").click(function() {
-      var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
-      var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      chart_name="clicks"
+      config.data.labels=chart_labels[chart_name]
+      config.data.datasets[0].data=chart_data[chart_name]
       myChartData.update();
     });
 
     $("#2").click(function() {
-      var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
-      var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
+      chart_name="engagement_time"
+      config.data.labels=chart_labels[chart_name]
+      config.data.datasets[0].data=chart_data[chart_name]
       myChartData.update();
     });
 
@@ -491,14 +496,15 @@ demo = {
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 
 
-    var myChart = new Chart(ctx, {
+
+    var pagdata={
       type: 'bar',
       responsive: true,
       legend: {
         display: false
       },
       data: {
-        labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+        labels: chart_labels['pages'],
         datasets: [{
           label: "Countries",
           fill: true,
@@ -508,12 +514,51 @@ demo = {
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-          data: [53, 20, 10, 80, 100, 45],
+          data: chart_data['pages'],
         }]
       },
       options: gradientBarChartConfiguration
-    });
+    }
+    var mypagesChart = new Chart(ctx, pagdata);
 
+    const source = new EventSource("/chart-data");
+
+source.onmessage = function (event) {
+  
+
+    const cdata = JSON.parse(event.data);
+    console.log(chart_labels,chart_name,chart_labels[chart_name]);
+    if (chart_labels[chart_name].length === 30) {
+      chart_labels[chart_name].shift();
+      chart_data[chart_name].shift();
+    }
+    chart_labels[chart_name].push(cdata[chart_name].label);
+    chart_data[chart_name].push(cdata[chart_name].value);
+    config.data.labels=chart_labels[chart_name];
+    config.data.datasets[0].data=chart_data[chart_name];        
+    console.log(cdata);
+    myChartData.update();
+
+    var chart_maps={"sessions":{"config":sesdata,"chartobj":mysessChart},"devices":{"config":devdata,"chartobj":mydeviceChart},"pages":{"config":pagdata,"chartobj":mypagesChart}}
+    for (const key in chart_maps) {
+
+      if (chart_labels[key].length === 5) {
+        chart_labels[key].shift();
+        chart_data[key].shift();
+      }
+      chart_labels[key].push(cdata[key].label);
+      chart_data[key].push(cdata[key].value);
+      chart_maps[key]['config'].data.labels=chart_labels[key];
+      chart_maps[key]['config'].data.datasets[0].data=chart_data[key];        
+      console.log(cdata);
+      chart_maps[key]['chartobj'].update();
+
+    }
+
+    document.getElementById('totsesscount').innerHTML=cdata['total_sessions_count'];
+    document.getElementById('totpagecount').innerHTML=cdata['total_pages_count'];
+    document.getElementById('totdevicecount').innerHTML=cdata['total_devices_count'];
+}
   },
 
   initGoogleMaps: function() {
@@ -740,3 +785,13 @@ demo = {
   }
 
 };
+
+
+
+
+
+
+
+
+
+
