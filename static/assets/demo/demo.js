@@ -4,38 +4,8 @@ var chart_data = {"sessions":[0],"clicks":[0],"engagement_time":[0],"devices":[0
 
 var chart_name="sessions";
 var reconnectFrequencySeconds = 1;
-var evtSource;
 
 // Putting these functions in extra variables is just for the sake of readability
-var waitFunc = function() { return reconnectFrequencySeconds * 1000 };
-var tryToSetupFunc = function() {
-    setupEventSource();
-    reconnectFrequencySeconds *= 2;
-    if (reconnectFrequencySeconds >= 64) {
-        reconnectFrequencySeconds = 64;
-    }
-};
-
-var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
-
-function setupEventSource() {
-    evtSource = new EventSource("/chart-data"); 
-    evtSource.onmessage = function(e) {
-      console.log("hi");
-
-    };
-    evtSource.onopen = function(e) {
-      console.log("opened");
-      reconnectFrequencySeconds = 1;
-    };
-    evtSource.onerror = function(e) {
-      evtSource.close();
-      console.log("closed");
-      setTimeout(reconnectFunc,15000);
-    };
-}
-
-setupEventSource();
 
 
 demo = {
@@ -556,10 +526,27 @@ demo = {
     }
     var mypagesChart = new Chart(ctx, pagdata);
 
-    // const source = new EventSource("/chart-data");
 
-evtSource.onmessage = function (event) {
-  
+    var waitFunc = function() { return reconnectFrequencySeconds * 1000 };
+var tryToSetupFunc = function() {
+    setupEventSource();
+    reconnectFrequencySeconds *= 2;
+    if (reconnectFrequencySeconds >= 64) {
+        reconnectFrequencySeconds = 64;
+    }
+};
+
+var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
+
+
+    const source = new EventSource("/chart-data");
+
+    source.onerror= function (){
+      setTimeout(reconnectFunc,1000)
+    }
+
+    source.onmessage = function (event) {
+      reconnectFrequencySeconds=1;
 
     const cdata = JSON.parse(event.data);
     // console.log(chart_labels,chart_name,chart_labels[chart_name]);
