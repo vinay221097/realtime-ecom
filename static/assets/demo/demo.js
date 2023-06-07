@@ -28,8 +28,8 @@ function setupEventSource() {
       reconnectFrequencySeconds = 100;
     };
     evtSource.onerror = function(e) {
-      console.log("closed");
       evtSource.close();
+      console.log("closed");
       reconnectFunc();
     };
 }
