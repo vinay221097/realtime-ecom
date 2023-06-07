@@ -36,7 +36,7 @@ def generate_random_data(request):
                 client_data("client1")
             )
             yield json_data
-            time.sleep(100)
+            time.sleep(10000)
     except GeneratorExit:
         print("Client %s disconnected", client_ip)
 
