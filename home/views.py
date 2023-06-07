@@ -10,13 +10,12 @@ from django_eventstream import send_event
 def index(request):
 
     # Page from the theme 
-    chart_data(request)
     return render(request, 'pages/dashboard.html')
 
 
 
 
-def generate_random_data(request):
+async def generate_random_data(request):
     """
     Generates random value between 0 and 100
 

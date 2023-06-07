@@ -3,6 +3,38 @@ var chart_labels = {"sessions":[0],"clicks":[0],"engagement_time":[0],"pages":[0
 var chart_data = {"sessions":[0],"clicks":[0],"engagement_time":[0],"devices":[0],"pages":[0]};
 
 var chart_name="sessions";
+var reconnectFrequencySeconds = 1;
+var evtSource;
+
+// Putting these functions in extra variables is just for the sake of readability
+var waitFunc = function() { return reconnectFrequencySeconds * 1000 };
+var tryToSetupFunc = function() {
+    setupEventSource();
+    reconnectFrequencySeconds *= 2;
+    if (reconnectFrequencySeconds >= 64) {
+        reconnectFrequencySeconds = 64;
+    }
+};
+
+var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
+
+function setupEventSource() {
+    evtSource = new EventSource("/chart-data"); 
+    evtSource.onmessage = function(e) {
+      console.log(e);
+    };
+    evtSource.onopen = function(e) {
+      reconnectFrequencySeconds = 1;
+    };
+    evtSource.onerror = function(e) {
+      evtSource.close();
+      reconnectFunc();
+    };
+}
+
+setupEventSource();
+
+
 demo = {
   initPickColor: function() {
     $('.pick-class-label').click(function() {
@@ -521,9 +553,9 @@ demo = {
     }
     var mypagesChart = new Chart(ctx, pagdata);
 
-    const source = new EventSource("/chart-data");
+    // const source = new EventSource("/chart-data");
 
-source.onmessage = function (event) {
+evtSource.onmessage = function (event) {
   
 
     const cdata = JSON.parse(event.data);
