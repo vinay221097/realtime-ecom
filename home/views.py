@@ -52,4 +52,4 @@ def chart_data(request):
 
 
 def testing(request):
-    return HttpResponse("<html><body>Hi</body></html>")
+    return render(request, 'pages/dashboard.html')
