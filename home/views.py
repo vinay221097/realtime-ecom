@@ -51,4 +51,5 @@ def chart_data(request):
     return StreamingHttpResponse(res, content_type='text/event-stream')
 
 
-
+def testing(request):
+    return HttpResponse("<html><body>Hi</body></html>")
