@@ -24,9 +24,11 @@ function setupEventSource() {
       console.log(e);
     };
     evtSource.onopen = function(e) {
-      reconnectFrequencySeconds = 1;
+      console.log("opened");
+      reconnectFrequencySeconds = 100;
     };
     evtSource.onerror = function(e) {
+      console.log("closed");
       evtSource.close();
       reconnectFunc();
     };
