@@ -529,7 +529,7 @@ demo = {
 
     var waitFunc = function() { return reconnectFrequencySeconds * 1000 };
 var tryToSetupFunc = function() {
-    setupEventSource();
+    
     reconnectFrequencySeconds *= 2;
     if (reconnectFrequencySeconds >= 64) {
         reconnectFrequencySeconds = 64;
@@ -538,11 +538,10 @@ var tryToSetupFunc = function() {
 
 var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
 
-
     const source = new EventSource("/chart-data");
 
     source.onerror= function (){
-      setTimeout(reconnectFunc,1000)
+      setTimeout(1000)
     }
 
     source.onmessage = function (event) {
