@@ -15,32 +15,23 @@ var tryToSetupFunc = function() {
         reconnectFrequencySeconds = 64;
     }
 };
-function wait(ms){
-  var start = new Date().getTime();
-  var end = start;
-  while(end < start + ms) {
-    console.log(end);
-    end = new Date().getTime();
- }
-}
 
 var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
 
 function setupEventSource() {
     evtSource = new EventSource("/chart-data"); 
     evtSource.onmessage = function(e) {
-      wait(15000);
       console.log("hi");
 
     };
     evtSource.onopen = function(e) {
       console.log("opened");
-      reconnectFrequencySeconds = 100;
+      reconnectFrequencySeconds = 1;
     };
     evtSource.onerror = function(e) {
       evtSource.close();
       console.log("closed");
-      reconnectFunc();
+      setTimeout(reconnectFunc(),15000);
     };
 }
 
