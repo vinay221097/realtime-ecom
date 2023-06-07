@@ -56,15 +56,19 @@ def client_data(client_id):
             if 'engagement_time' in response.keys():
                 data_obj['engagement_time']={"label":date_value,"value":int(response['engagement_time'])}
             if 'devices' in response.keys():
-                data_obj['devices']={"label":list(response['devices'].keys()),"value":list(response['devices'].values())}
+                val = list(response['devices'].values())
+                temp=[int(x) for x in val ]
+                data_obj['devices']={"label":list(response['devices'].keys()),"value":temp}
             if "pages" in response.keys():
-                data_obj['pages']={"label":list(response['pages'].keys()),"value":list(response['pages'].values())}
+                val = list(response['pages'].values())
+                temp=[int(x) for x in val ]
+                data_obj['pages']={"label":list(response['pages'].keys()),"value":temp}
             if "total_sessions" in response.keys():
-                data_obj['total_sessions_count']=response["total_sessions"]
+                data_obj['total_sessions_count']=int(response["total_sessions"])
             if "total_pages" in response.keys():
-                data_obj['total_pages_count']=response["total_pages"]
+                data_obj['total_pages_count']=int(response["total_pages"])
             if "total_devices" in response.keys():
-                data_obj["total_devices_count"]=response["total_devices"]
+                data_obj["total_devices_count"]=int(response["total_devices"])
 
 
     except ClientError as e:
