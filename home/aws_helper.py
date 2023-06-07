@@ -57,12 +57,12 @@ def client_data(client_id):
                 data_obj['engagement_time']={"label":date_value,"value":int(response['engagement_time'])}
             if 'devices' in response.keys():
                 val = list(response['devices'].values())
-                temp=[int(x) for x in val ]
-                data_obj['devices']={"label":list(response['devices'].keys()),"value":temp}
+                temp=[int(x) for x in val[1] ]
+                data_obj['devices']={"label":val[0],"value":temp}
             if "pages" in response.keys():
                 val = list(response['pages'].values())
-                temp=[int(x) for x in val ]
-                data_obj['pages']={"label":list(response['pages'].keys()),"value":temp}
+                temp=[int(x) for x in val[1] ]
+                data_obj['pages']={"label":val[0],"value":temp}
             if "total_sessions" in response.keys():
                 data_obj['total_sessions_count']=int(response["total_sessions"])
             if "total_pages" in response.keys():
