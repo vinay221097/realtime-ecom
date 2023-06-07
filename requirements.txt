@@ -4,5 +4,6 @@ python-dotenv
 whitenoise
 django-admin-black==1.0.7
 boto3
+django-eventstream
 # psycopg2-binary
 # mysqlclient
