@@ -509,9 +509,9 @@ demo = {
         display: false
       },
       data: {
-        labels: chart_labels['pages'],
+        labels: chart_labels['devices'],
         datasets: [{
-          label: "Countries",
+          label: "devices",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -519,7 +519,7 @@ demo = {
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-          data: chart_data['pages'],
+          data: chart_data['devices'],
         }]
       },
       options: gradientBarChartConfiguration
@@ -560,7 +560,7 @@ var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
     // console.log(cdata);
     myChartData.update();
 
-    var chart_maps={"sessions":{"config":sesdata,"chartobj":mysessChart},"devices":{"config":devdata,"chartobj":mydeviceChart},"pages":{"config":pagdata,"chartobj":mypagesChart}}
+    var chart_maps={"pages":{"config":devdata,"chartobj":mydeviceChart}}
     for (const key in chart_maps) {
 
       if (chart_labels[key].length === 5) {
@@ -577,7 +577,7 @@ var reconnectFunc = function() { setTimeout(tryToSetupFunc, waitFunc()) };
     }
 
     document.getElementById('totsesscount').innerHTML=cdata['total_sessions_count'];
-    document.getElementById('totpagecount').innerHTML=cdata['total_pages_count'];
+    document.getElementById('totpagecount').innerHTML=cdata['total_devices_count'];
     document.getElementById('totdevicecount').innerHTML=cdata['total_devices_count'];
 }
   },

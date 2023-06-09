@@ -10,7 +10,7 @@ config = Config(
    }
 )
 
-db=boto3.resource('dynamodb',region_name=REGION,config=config)
+db=boto3.Session(aws_access_key_id = "AKIAXJMI2AKYMXJLQ5EC",aws_secret_access_key = "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").resource('dynamodb',region_name=REGION,config=config)
 
 
 data_obj={
@@ -70,11 +70,13 @@ def client_data(client_id):
                 data_obj['total_pages_count']=int(response["total_pages"])
             if "total_devices" in response.keys():
                 data_obj["total_devices_count"]=int(response["total_devices"])
+    
 
 
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
+
         return data_obj
 
 
